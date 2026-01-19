@@ -12,7 +12,7 @@ top to bottom direction
   Person(admin, "Administrator", "An administrator managing the system")
   Person(mainuser, "Животновод", "Управляет фермой")
   System(ferma, "Svinoferma", "Система фермы")
-  System(center_ferma, "CenterFerma", "Центральная система мониторинга")
+  System(center_ferma, "CenterFerma", "Центральный мониторинг ферм")
   System(agro_tech, "AgroTech", "Центральная платформа АгроТех")
   System_Ext(extr_comm, "ExtraCommunication", "Система экстренных оповещений")
   Rel(user, ferma, "Использует для работы")
