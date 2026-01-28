@@ -5,17 +5,23 @@ top to bottom direction
 
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
 
-  title Система фермы в общей архитектуре платформы АгроТех
+ title Система фермы в общей архитектуре платформы АгроТех
+
+
+ System_Ext(cam, "IP-камеры", "RTSP/ONVIF")
+ System_Ext(sensors, "Датчики/актуаторы с ферм", "кормушки, поилки, фильтры воды")
+ System_Ext(erp, "ERP система (1С:Агро)", "Финансы, склад, кадры")
+ System_Ext(bi, "BI система (Power BI)", "Отчеты и визуализация")
+ System_Ext(extr_comm, "Система экстренных оповещений" , "Push/SMS/Radio")
+
+
  System_Boundary(система_фермы, "Ферма") {
   Person(operator, "Сотрудник (оператор, животновод, техник)", "Работает на ферме")
   System(ferma, "Svinoferma", "Система фермы")
-  System_Ext(extr_comm, "ExtraCommunication" , "Система экстренных оповещений")
   Rel(extr_comm, operator , "Экстренные оповещения")
   Rel(operator, ferma, "Авторизуется, мониторит ферму, обслуживает систему")
   Rel(ferma,extr_comm,"Оповещает оператора")
  }
-
-
 
 
 System_Boundary(система, "Центральная платформа") {
