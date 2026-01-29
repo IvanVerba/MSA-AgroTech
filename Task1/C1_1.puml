@@ -1,9 +1,9 @@
 @startuml C1_1
-top to bottom direction
+left to right direction
 
 !include <C4/C4_Context>
 
-title Мониторинг ферм с приоритетом локальных вычислений
+title C1, вар.1: Мониторинг ферм с приоритетом локальных вычислений
 
 ' Ферма
 Enterprise_Boundary(система_фермы, "Ферма") {
