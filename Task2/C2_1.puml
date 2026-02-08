@@ -24,7 +24,7 @@ Enterprise_Boundary(система_фермы, "Ферма") {
 
         Rel(iot_edge,tsdb,"Сохраняет данные для отправки в центр", "SQL")
         Rel(iot_edge,opdb,"CRUD", "SQL|файловый I/O")
-        Rel(aiInference,iot_edge,"Распознанные данные о поголовье и состоянии", "MQTT|Vendor-based")
+        Rel(aiInference,iot_edge,"Распознанные данные о поголовье и состоянии", "Modbus|MQTT|OPC UA")
 
 
  Person(employee, "Сотрудник (оператор, животновод, техник)", "Работает на ферме")
@@ -37,12 +37,12 @@ Enterprise_Boundary(система_фермы, "Ферма") {
  System_Ext(sensors, "Мониторинг параметров среды\n[IoT]",\
                      "Съём показаний датчиков (климат, вода, воздух, фильтры, кормохранилища и др.)")
  System_Ext(feeding, "Кормушки и поилки\n[PLC]", "Управление кормушками/поилками")
- Rel(iot_edge,vcam,"Управляет видеокамерами","ONVIF")
+ Rel(iot_edge,vcam,"Управляет видеокамерами","ONVIF/RTSP")
  Rel(extr_comm, employee , "Экстренные оповещения (инциденты животных, сбои техники)", "телекоммуникации, аудиовидео-сигналы")
- Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP")
- Rel(sensors, iot_edge, "Предоставляет данные мониторинга среды", "MQTT")
- Rel(rfid, iot_edge, "Предоставляет данные RFID-мониторинга животных", "MQTT" )
- Rel(iot_edge,feeding,"Управляет кормлением", "Modbus|MQTT")
+ Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP/RTP")
+ Rel(sensors, iot_edge, "Предоставляет данные мониторинга среды", "Modbus|MQTT|OPC UA")
+ Rel(rfid, iot_edge, "Предоставляет данные RFID-мониторинга животных", "Modbus|MQTT|OPC UA" )
+ Rel(iot_edge,feeding,"Управляет кормлением", "Modbus|MQTT|OPC UA")
  Rel(employee, iot_edge, "Авторизуется, работает на ферме с использованием системы", "HMI(Dashboard)")
  Rel(iot_edge,extr_comm,"Оповещает сотрудников", "Протокол системы опопвещения, опциональное квитирование")
 }
