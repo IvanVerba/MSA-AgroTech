@@ -31,12 +31,12 @@ Enterprise_Boundary(система_фермы, "Ферма") {
         Container(mqtt, "MQTT-брокер фермы", "NanoMQ", "Шина данных фермы: Первичные данные+команды MQTT-устройств, обработанные данные IoT-шлюза, мост с центром")
 
         Rel(mqtt,mqtt_db,"Сохраняет сообщения, требующие надёжной доставки(QoS>0) или удержания(retained)", "SQL")
-        Rel(hmi,iot_edge,"Визуализация наблюдаемых данных и команд управления", "WebSocket")
+        Rel(hmi,iot_edge,"Визуализация наблюдаемых данных и команд управления", "WebSocket, HTTP")
         Rel(iot_edge,hist_db,"CRUD", "SQL, mediafiles")
         Rel(iot_edge, mqtt,"Обработка потоков данных и команд", "MQTT")
 '        Rel(iot_edge, media_db,"files i/o", "mediafiles")
-        Rel(grafana, hist_db,"CRUD", "SQL, mediafiles")
-        Rel(hmi,grafana,"Визуализация истории мониторинга", "WebSocket, HTTP")
+        Rel(hist_db, grafana, "Выборка данных истории", "SQL, mediafiles")
+        Rel(grafana,iot_edge,"Построение визуализации истории мониторинга", "HTTP")
         Rel(aiInference,iot_edge,"Распознанные данные о поголовье и событиях, связанные видеоэпизоды", "gRPC|MQTT|mediafiles")
 
  }
