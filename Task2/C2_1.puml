@@ -24,7 +24,7 @@ Enterprise_Boundary(система_фермы, "Ферма") {
        Container(grafana, "Визуализатор истории мониторинга", "Grafana", "Визуализация истории показаний и видео событий", " optional")
         Container(hmi, "HMI для мониторинга и управления устройствами", "Node-RED Dashboard", "Web-интерфейс мониторинга/управления на планшете, телефоне или сенсорной панели IoT-Edge")
         Container(aiInference, "Инференс ИИ-модели мониторинга животных", "Партнёрская ИИ-модель", "Распознавание количества, состояний животных и инцидентов")
-
+        Container(nginx, "API-шлюз", "Nginx", "Шлюз API для внешних систем")
         ContainerDb(mqtt_db, "Автоматический персистентный буфер брокера MQTT", "SQLite", "bridge.db: Исходящие данные в центр\nretained.db:последние актуальные состояния датчиков/устройств\npersistence.db: текущие сессии и очереди локальных клиентов", " auto by NanoMQ")
         ContainerDb(hist_db, "Локальная база истории (временнЫе ряды)", "InfluxDB+mediafiles", "История телеметрии, событий/инцидентов с ограничением TTL", " optional")
         ContainerDb(media_db,"Хранилище видеофрагментов", "mediafiles", "Папка видеофрагментов событий/инцидентов с ограничением TTL", " optional")
@@ -32,6 +32,7 @@ Enterprise_Boundary(система_фермы, "Ферма") {
 
         Rel(mqtt,mqtt_db,"Сохраняет сообщения, требующие надёжной доставки(QoS>0) или удержания(retained)", "SQL")
         Rel(hmi,iot_edge,"Визуализация наблюдаемых данных и команд управления", "WebSocket")
+        Rel(nginx,iot_edge,"Безопасный доступ внешнего API к серверу фермы", "HTTP/REST")
         Rel(iot_edge,hist_db,"CRUD", "SQL, mediafiles")
         Rel(iot_edge, mqtt,"Обработка потоков данных и команд", "MQTT")
         Rel(iot_edge, media_db,"files i/o", "mediafiles")
