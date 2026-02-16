@@ -9,6 +9,10 @@ title C2, вар.1: Мониторинг ферм с приоритетом ло
 
 ' Ферма
 Enterprise_Boundary(система_фермы, "Ферма") {
+  System_Boundary(farm_monitor,\
+         "Мониторинг свинофермы",\
+         "Мониторинг с расчётом на приоритет автономности фермы"){
+
  Container(iot_edge, \
         "IoT-шлюз+HMI",\
         "Node-RED + пакеты + JS(node.js)",\
@@ -35,7 +39,7 @@ Enterprise_Boundary(система_фермы, "Ферма") {
         Rel(hmi,grafana,"Визуализация истории мониторинга", "WebSocket, HTTP")
         Rel(aiInference,iot_edge,"Распознанные данные о поголовье и событиях, связанные видеоэпизоды", "gRPC|MQTT|mediafiles")
 
-
+ }
  Person(employee, "Сотрудник (оператор, животновод, техник)", "Работает на ферме")
 
  System_Ext(extr_comm, "Система экстренных оповещений",\
