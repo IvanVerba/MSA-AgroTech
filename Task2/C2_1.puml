@@ -1,7 +1,18 @@
 @startuml C2_1
- left to right direction
+left to right direction
 ' top to bottom direction
 !include <C4/C4_Container>
+
+hide <<boundary>> stereotype
+hide <<enterprise_boundary>> stereotype
+hide <<system_boundary>> stereotype
+
+<style>
+.system_boundary{
+    HorizontalAlignment left
+    Shadowing 1
+}
+</style>
 
 title C2, вар.1: Мониторинг ферм с приоритетом локальных вычислений
 
@@ -9,11 +20,8 @@ title C2, вар.1: Мониторинг ферм с приоритетом ло
 
 ' Ферма
 Enterprise_Boundary(система_фермы, "Ферма") {
-  System_Boundary(farm_monitor,\
-         "Мониторинг свинофермы",\
-         "Мониторинг с расчётом на приоритет автономности фермы"){
-
- Container(iot_edge, \
+  System_Boundary(farm_monitor, "Мониторинг свинофермы"){
+       Container(iot_edge, \
         "IoT-шлюз+HMI",\
         "Node-RED + пакеты + JS(node.js)",\
         "Приём данных с устройств, Обработка сырых данных в аналитики,\
@@ -29,6 +37,8 @@ Enterprise_Boundary(система_фермы, "Ферма") {
         ContainerDb(hist_db, "Локальная база истории (временнЫе ряды)", "InfluxDB+mediafiles", "История телеметрии, событий/инцидентов и связанных видеоотрывков с ограничением TTL", " optional")
 '        ContainerDb(media_db,"Хранилище видеофрагментов", "mediafiles", "Папка видеофрагментов событий/инцидентов с ограничением TTL", " optional")
         Container(mqtt, "MQTT-брокер фермы", "NanoMQ", "Шина данных фермы: Первичные данные+команды MQTT-устройств, обработанные данные IoT-шлюза, мост с центром")
+'       hmi-[hidden]-aiInference
+        iot_edge-[hidden]-hmi
 
         Rel(mqtt,mqtt_db,"Сохраняет сообщения, требующие надёжной доставки(QoS>0) или удержания(retained)", "SQL")
         Rel(hmi,iot_edge,"Визуализация наблюдаемых данных и команд управления", "WebSocket, HTTP")
@@ -56,7 +66,10 @@ Enterprise_Boundary(система_фермы, "Ферма") {
  Rel(sensors, iot_edge, "Данные мониторинга", "Modbus|OPC UA")
  Rel(sensors, mqtt, "Данные мониторинга", "MQTT")
  'Rel(rfid, iot_edge, "Данные RFID-мониторинга животных", "OPC UA" )'
- Rel(iot_edge,feeding,"Данные/команды кормления", "MQTT|Modbus|OPC UA")
+ Rel(iot_edge,feeding,"Данные/команды кормления", "Modbus|OPC UA")
+ Rel(mqtt,feeding,"Данные/команды кормления", "MQTT")
+ feeding-[hidden]-mqtt
+ feeding-right[hidden]-sensors
  Rel(employee, hmi, "Авторизуется, работает на ферме с использованием системы", "HMI(Dashboard)")
  Rel(iot_edge,extr_comm,"Оповещает сотрудников", "Протокол системы опопвещения, опциональное квитирование")
 }
