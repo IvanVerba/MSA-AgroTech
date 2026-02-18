@@ -37,7 +37,7 @@ Enterprise_Boundary(система_фермы, "Ферма") {
         ContainerDb(hist_db, "Локальная база истории (временнЫе ряды)", "InfluxDB+mediafiles", "История телеметрии, событий/инцидентов и связанных видеоотрывков с ограничением TTL", " optional")
 '        ContainerDb(media_db,"Хранилище видеофрагментов", "mediafiles", "Папка видеофрагментов событий/инцидентов с ограничением TTL", " optional")
         Container(mqtt, "MQTT-брокер фермы", "NanoMQ", "Шина данных фермы: Первичные данные+команды MQTT-устройств, обработанные данные IoT-шлюза, мост с центром")
-'       hmi-[hidden]-aiInference
+''       hmi-[hidden]-aiInference
         iot_edge-[hidden]-hmi
 
         Rel(mqtt,mqtt_db,"Сохраняет сообщения, требующие надёжной доставки(QoS>0) или удержания(retained)", "SQL")
@@ -61,17 +61,22 @@ Enterprise_Boundary(система_фермы, "Ферма") {
                      "Съём показаний датчиков (климат, вода, воздух, фильтры, кормохранилища, RFID и др.)")
  System_Ext(feeding, "Кормушки и поилки\n[PLC]", "Управление кормушками/поилками")
  Rel(iot_edge,vcam,"Управляет видеокамерами","ONVIF/RTSP")
- Rel(extr_comm, employee , "Экстренные оповещения (инциденты животных, сбои техники)", "телекоммуникации, радио, аудиовидео-сигналы")
  Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP/RTP")
- Rel(sensors, iot_edge, "Данные мониторинга", "Modbus|OPC UA")
  Rel(sensors, mqtt, "Данные мониторинга", "MQTT")
- 'Rel(rfid, iot_edge, "Данные RFID-мониторинга животных", "OPC UA" )'
- Rel(iot_edge,feeding,"Данные/команды кормления", "Modbus|OPC UA")
+ Rel(sensors, iot_edge, "Данные мониторинга", "Modbus|OPC UA")
+' BiRel(feeding,mqtt,"Данные/команды кормления", "MQTT")
+' BiRel(feeding,iot_edge,"Данные/команды кормления", "Modbus|OPC UA")
  Rel(mqtt,feeding,"Данные/команды кормления", "MQTT")
+ Rel(iot_edge,feeding,"Данные/команды кормления", "Modbus|OPC UA")
+
+' employee-[hidden]-iot_edge
  feeding-[hidden]-mqtt
  feeding-right[hidden]-sensors
  Rel(employee, hmi, "Авторизуется, работает на ферме с использованием системы", "HMI(Dashboard)")
+ Rel(extr_comm, employee , "Экстренные оповещения (инциденты животных, сбои техники)", "телекоммуникации, радио, аудиовидео-сигналы")
+ ' Rel_D(employee ,extr_comm,  "Экстренные оповещения (инциденты животных, сбои техники)", "телекоммуникации, радио, аудиовидео-сигналы")
  Rel(iot_edge,extr_comm,"Оповещает сотрудников", "Протокол системы опопвещения, опциональное квитирование")
+
 }
 
 
