@@ -67,9 +67,10 @@ Enterprise_Boundary(система_фермы, "Ферма") {
  Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP/RTP")
  Rel(sensors, iot_edge, "Данные мониторинга", "Modbus|OPC UA")
  Rel(sensors, mqtt, "Данные мониторинга", "MQTT")
- BiRel_U(feeding,iot_edge,"Данные/команды кормления", "Modbus|OPC UA")
+ BiRel_L(feeding,iot_edge,"Данные/команды кормления", "Modbus|OPC UA")
  BiRel(feeding,mqtt,"Данные/команды кормления", "MQTT")
  sensors-[hidden]-feeding
+ vcam-[hidden]-extr_comm
 ' feeding-[hidden]-mqtt
 ' feeding-right[hidden]-sensors
  Rel(employee, hmi, "Авторизуется, работает на ферме с использованием системы", "HMI(Dashboard)")
