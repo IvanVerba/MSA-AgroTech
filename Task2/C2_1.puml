@@ -10,7 +10,7 @@ hide <<system_boundary>> stereotype
 <style>
 .system_boundary{
     '''
-    HorizontalAlignment right
+    'HorizontalAlignment right
     Shadowing 1
 }
 </style>
@@ -68,10 +68,11 @@ Enterprise_Boundary(система_фермы, "Ферма") {
 
 ' !!!
 ' employee-[hidden]-iot_edge
- Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP/RTP")
- '''Rel_Back(aiInference, vcam, "Аудио/Видео-поток", "RTSP/RTP")
+ '''Rel(vcam, aiInference, "Аудио/Видео-поток", "RTSP/RTP")
+ Rel_Back(aiInference, vcam, "Аудио/Видео-поток", "RTSP/RTP")
  Rel(sensors, iot_edge, "Данные мониторинга", "Modbus|OPC UA")
  Rel(sensors, mqtt, "Данные мониторинга", "MQTT")
+ ' !BiRel_U косвенно сдвинет Сотрудника и оповещения вниз
  BiRel(feeding,iot_edge,"Данные/команды кормления", "Modbus|OPC UA")
  BiRel(feeding,mqtt,"Данные/команды кормления", "MQTT")
  sensors-[hidden]-feeding
